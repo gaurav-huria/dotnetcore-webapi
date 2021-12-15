@@ -26,8 +26,16 @@ namespace dotnetcore_webapi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
+
+            services.AddTransient<IOperationTransient, Operation>();
+            services.AddScoped<IOperationScoped, Operation>();
+            services.AddSingleton<IOperationSingleton, Operation>();
+            services.AddSingleton<IOperationSingletonInstance>(a => new Operation(Guid.Empty));
+
+            services.AddTransient<DependencyService1, DependencyService1>();
+            services.AddTransient<DependencyService2, DependencyService2>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnetcore_webapi", Version = "v1" });
